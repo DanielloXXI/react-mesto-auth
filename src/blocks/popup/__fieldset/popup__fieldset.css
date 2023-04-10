@@ -1,0 +1,15 @@
+.popup__fieldset {
+    padding:0;
+    border:0;
+    display:block;
+}
+
+.popup__fieldset:last-of-type {
+    margin: 0 0 13px 0;
+}
+
+@media screen and (max-width:767px) {
+    .popup__fieldset:last-of-type {
+        margin: 0 0 13px 0;
+    }
+}

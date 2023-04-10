@@ -1,0 +1,8 @@
+.element__description {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 25px 0 0 0;
+    width: 282px;
+    justify-content: space-between;
+}
