@@ -1,9 +1,11 @@
 .header {
     width: 100%;
     max-width: 880px;
-    margin: 45px auto 40px auto;
+    margin: 45px auto 60px auto;
     height:74px;
     border-bottom: 1px solid rgba(84, 84, 84, 0.8);
+    display: flex;
+    justify-content: space-between;
 }
 
 @media screen and (max-width:767px) {

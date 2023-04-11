@@ -1,0 +1,9 @@
+.auth-form__question {
+    margin-top: 15px;
+    padding: 0;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: white;
+}

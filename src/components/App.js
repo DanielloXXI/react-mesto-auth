@@ -10,6 +10,12 @@ import { CardContext } from "../contexts/CardContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import { Route, Switch, Routes, useNavigate, Navigate } from 'react-router-dom';
+import SignUp from "./SignUp";
+import SignIn from "./SignIn";
+import ProtectedRoute from "./ProtectedRoute";
+import InfoTooltip from "./InfoTooltip";
+import apiAuth from "../utils/Api-auth";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -20,6 +26,8 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     Promise.all([api.getInfoAboutUser(), api.getInitialCards()])
@@ -129,7 +137,7 @@ function App() {
     api.deleteCard(card._id)
       .then((res) => {
         // setCards(cards.filter(c => c._id !== card._id));
-        setCards((state) => state.filter((item) => item._id !== card._id)); 
+        setCards((state) => state.filter((item) => item._id !== card._id));
       })
       .catch((err) => {
         console.log(`Ошибка ${err}`);
@@ -143,38 +151,60 @@ function App() {
 
   React.useEffect(() => {
     function closeByEscape(evt) {
-      if(evt.key === 'Escape') {
+      if (evt.key === 'Escape') {
         closeAllPopups();
       }
     }
-    if(isOpen) { // навешиваем только при открытии
+    if (isOpen) { // навешиваем только при открытии
       document.addEventListener('keydown', closeByEscape);
       return () => {
         document.removeEventListener('keydown', closeByEscape);
       }
     }
-  }, [isOpen]) 
+  }, [isOpen])
+
+  function goRegistration() {
+    navigate(`/sign-up`, { replace: true });
+  }
+
+  function goExit() {
+    setIsLoggedIn(false);
+    localStorage.removeItem(`jwt`);
+    navigate(`/`, { replace: true });
+  }
+
+  function goEnter() {
+    navigate(`/sign-in`, { replace: true });
+  }
 
   return (
     <CardContext.Provider value={cards}>
       <CurrentUserContext.Provider value={currentUser}>
-        <Header />
+        <Header isLoggedIn={isLoggedIn} toEnter={goEnter} toRegistration={goRegistration} toExit={goExit} email={`hello@mail.ru`} />
+        <Routes>
+          <Route path="/" element={<ProtectedRoute element={SignIn} isLoggedIn={isLoggedIn} />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/sign-in" element={<SignIn />} />
 
-        <Main onEditAvatar={showPopupAvatar} onEditProfile={showPopupEdit} onAddPlace={showPopupAdd} onImagePopup={handleCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
+        </Routes>
+
+        <InfoTooltip />
+
+        {/* <Main onEditAvatar={showPopupAvatar} onEditProfile={showPopupEdit} onAddPlace={showPopupAdd} onImagePopup={handleCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
 
         <Footer />
 
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} buttonText={isLoading? 'Создание...' : 'Создать'}>
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} buttonText={isLoading ? 'Создание...' : 'Создать'}>
 
         </AddPlacePopup>
 
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} buttonText={isLoading? 'Сохранение...' : 'Сохранить'}/>
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} buttonText={isLoading ? 'Сохранение...' : 'Сохранить'} />
 
         <ImagePopup name={"photo"} card={selectedCard} onClose={closeAllPopups} isOpened={isImagePopupOpen} />
 
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} buttonText={isLoading? 'Сохранение...' : 'Сохранить'}/>
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} buttonText={isLoading ? 'Сохранение...' : 'Сохранить'} />
 
-        <PopupWithForm name={"delete"} title={"Вы уверены?"} buttonText={isLoading ? "Удаление..." : "Да"} />
+        <PopupWithForm name={"delete"} title={"Вы уверены?"} buttonText={isLoading ? "Удаление..." : "Да"} /> */}
 
       </CurrentUserContext.Provider>
     </CardContext.Provider>

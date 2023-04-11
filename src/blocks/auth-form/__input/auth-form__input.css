@@ -1,0 +1,33 @@
+.auth-form__input {
+    border: none;
+    border-bottom: 1px solid #CCCCCC;
+    background-color: black;
+    color: #CCCCCC;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    padding: 0 0 8px 0;
+    margin: 0;
+    width: 100%;
+}
+
+.auth-form__input::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: #CCCCCC;
+}
+
+.auth-form__input:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #CCCCCC;
+}
+
+.auth-form__input::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #CCCCCC;
+}
+
+.auth-form__input:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color: #CCCCCC;
+}

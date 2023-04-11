@@ -1,0 +1,4 @@
+.header__account-container {
+    display: flex;
+    flex-direction: row;
+}
