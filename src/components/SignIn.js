@@ -1,10 +1,10 @@
 import AuthForm from "./AuthForm";
 //Войти
 
-function SignIn() {
+function SignIn(props) {
     return (
         <>
-            <AuthForm title={"Вход"} buttonText={"Войти"} />
+            <AuthForm title={"Вход"} buttonText={"Войти"} onAuthUser={props.onAuthUser}/>
         </>
     );
 }

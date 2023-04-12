@@ -31,3 +31,11 @@
     /* Internet Explorer 10+ */
     color: #CCCCCC;
 }
+
+.auth-form__input:-webkit-autofill,
+.auth-form__input:-webkit-autofill:focus,
+.auth-form__input:-webkit-autofill:hover,
+.auth-form__input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+  /* здесь можно указать любой цвет фона, который вы хотите использовать */
+}

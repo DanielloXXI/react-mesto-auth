@@ -17,17 +17,26 @@ import ProtectedRoute from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip";
 import apiAuth from "../utils/Api-auth";
 
+
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
   const [selectedCard, setIsSelectedCard] = React.useState({});
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [isEmail, setIsEmail] = React.useState("");
+  const [isGoodAuth, setIsGoodAuth] = React.useState(false);
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    // настало время проверить токен
+    tokenCheck();
+  }, [])
 
   React.useEffect(() => {
     Promise.all([api.getInfoAboutUser(), api.getInitialCards()])
@@ -39,7 +48,6 @@ function App() {
         console.log(`Ошибка ${err}`);
       })
   }, []);
-
 
   function handleUpdateUser(props) {
     setIsLoading(true);
@@ -54,6 +62,44 @@ function App() {
       .finally(() => {
         setIsLoading(false);
       })
+  }
+
+  function handleRegistrationUser(props) {
+    apiAuth.signUp(props.password, props.email)
+      .then((response) => {
+        try {
+          if (response.status === 200) {
+            return response.json();
+          }
+        } catch (e) {
+          return (e)
+        }
+      })
+      .then((res) => {
+        setIsInfoTooltipOpen(true);
+        navigate('/sign-in', { replace: true });
+        setIsGoodAuth(true);
+      })
+      .catch((err) => {
+        setIsGoodAuth(false);
+        setIsInfoTooltipOpen(true);
+        console.log(`Ошибка ${err}`);
+      })
+  }
+
+  function handleLoginUser(props) {
+    apiAuth.signIn(props.password, props.email)
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem('jwt', data.token);
+          setIsLoggedIn(true);
+          setIsEmail(props.email);
+          props.setFormValue({ username: '', password: '' });
+          navigate('/users/me', { replace: true });
+          return data;
+        }
+      })
+      .catch(err => console.log(err))
   }
 
   function handleUpdateAvatar(props) {
@@ -109,6 +155,7 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsImagePopupOpen(false);
     setIsSelectedCard({});
+    setIsInfoTooltipOpen(false);
   }
 
   function handleCardLike(card) {
@@ -177,26 +224,43 @@ function App() {
     navigate(`/sign-in`, { replace: true });
   }
 
+  const tokenCheck = () => {
+    // если у пользователя есть токен в localStorage, 
+    // эта функция проверит, действующий он или нет
+    if (localStorage.getItem('jwt')) {
+      const jwt = localStorage.getItem('jwt');
+      if (jwt) {
+        // проверим токен
+        apiAuth.tokenValidity(jwt)
+          .then((res) => {
+            if (res) {
+              // авторизуем пользователя
+              setIsLoggedIn(true);
+              setIsEmail(res.data.email);
+              navigate("/users/me", { replace: true })
+            }
+            return res;
+          })
+          .catch((err) => console.log(err));
+      }
+      // здесь будем проверять токен
+    }
+  }
+
   return (
     <CardContext.Provider value={cards}>
       <CurrentUserContext.Provider value={currentUser}>
-        <Header isLoggedIn={isLoggedIn} toEnter={goEnter} toRegistration={goRegistration} toExit={goExit} email={`hello@mail.ru`} />
+        <Header isLoggedIn={isLoggedIn} toEnter={goEnter} toRegistration={goRegistration} toExit={goExit} email={isEmail} />
         <Routes>
-          <Route path="/" element={<ProtectedRoute element={SignIn} isLoggedIn={isLoggedIn} />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/sign-in" element={<SignIn />} />
-
+          <Route path="/" element={<ProtectedRoute element={Main} isLoggedIn={isLoggedIn} />} />
+          <Route path="/sign-up" element={<SignUp onRegistrationUser={handleRegistrationUser} />} />
+          <Route path="/sign-in" element={<SignIn onAuthUser={handleLoginUser} />} />
+          <Route path="/users/me" element={<ProtectedRoute element={Main} isLoggedIn={isLoggedIn} onEditAvatar={showPopupAvatar} onEditProfile={showPopupEdit} onAddPlace={showPopupAdd} onImagePopup={handleCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />} />
         </Routes>
 
-        <InfoTooltip />
+        <InfoTooltip isOpened={isInfoTooltipOpen} onClose={closeAllPopups} isGoodAuth={isGoodAuth} />
 
-        {/* <Main onEditAvatar={showPopupAvatar} onEditProfile={showPopupEdit} onAddPlace={showPopupAdd} onImagePopup={handleCardClick} onCardLike={handleCardLike} onCardDelete={handleCardDelete} />
-
-        <Footer />
-
-        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} buttonText={isLoading ? 'Создание...' : 'Создать'}>
-
-        </AddPlacePopup>
+        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} buttonText={isLoading ? 'Создание...' : 'Создать'} />
 
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} buttonText={isLoading ? 'Сохранение...' : 'Сохранить'} />
 
@@ -204,7 +268,7 @@ function App() {
 
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} buttonText={isLoading ? 'Сохранение...' : 'Сохранить'} />
 
-        <PopupWithForm name={"delete"} title={"Вы уверены?"} buttonText={isLoading ? "Удаление..." : "Да"} /> */}
+        <PopupWithForm name={"delete"} title={"Вы уверены?"} buttonText={isLoading ? "Удаление..." : "Да"} />
 
       </CurrentUserContext.Provider>
     </CardContext.Provider>

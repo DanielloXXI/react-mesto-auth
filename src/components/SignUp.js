@@ -7,7 +7,7 @@ function SignUp(props) {
 
     return (
         <>
-            <AuthForm title={"Регистрация"} buttonText={"Зарегистрироваться"} />
+            <AuthForm title={"Регистрация"} buttonText={"Зарегистрироваться"} onAuthUser={props.onRegistrationUser}/>
             <p className="auth-form__question">Уже зарегистрированы? <Link to="/sign-in" className="auth-form__link">Войти</Link></p>
         </>
     );
