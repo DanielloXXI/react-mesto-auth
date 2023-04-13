@@ -8,7 +8,7 @@ import { HashRouter, BrowserRouter } from 'react-router-dom';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename="/">
+    <BrowserRouter basename="https://danielloxxi.github.io/">
       <App />
     </BrowserRouter>
   </React.StrictMode>
