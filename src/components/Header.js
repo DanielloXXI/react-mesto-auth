@@ -1,7 +1,7 @@
 import logo from "../images/logo.svg";
 
 function Header({ toExit, toRegistration, email, isLoggedIn, toEnter }) {
-    const isRegistration = document.location.pathname === `/sign-up` ? true : false;
+    const isRegistration = document.location.pathname === `/#/sign-up` ? true : false;
     return (
         <header className="header">
             <img src={logo} alt="Логотип" className="header__logo" />
