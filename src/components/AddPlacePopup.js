@@ -1,5 +1,6 @@
 import PopupWithForm from "./PopupWithForm";
 import React from "react";
+import { useFormAndValidation } from "../hooks/useFormAndValidation";
 
 function AddPlacePopup(props) {
     const [name, setName] = React.useState("");
@@ -27,6 +28,8 @@ function AddPlacePopup(props) {
         setName('');
         setLink('');
     }, [props.isOpen]);
+
+    const {values, handleChange, errors, isValid, setValues, resetForm} = useFormAndValidation();
 
     return (
         <PopupWithForm name={"add"} title={"Новое место"} isOpened={props.isOpen} onClose={props.onClose} buttonText={props.buttonText} onSubmit={handleSubmit}>

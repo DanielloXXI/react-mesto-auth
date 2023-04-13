@@ -24,13 +24,7 @@ class ApiAuth {
                 email: email
             })
         })
-        .then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-            // если ошибка, отклоняем промис
-            return Promise.reject(new Error("Произошла ошибка"));
-        })
+        .then(handleResponse)
     }
 
     signIn(password, email) {
