@@ -1,7 +1,12 @@
-# Здесь будет ваш проект на Реакте с авторизацией и регистрацией
+<h1 align="center">Project "Place" with authorization and registration!</h1>
 
-Используйте ваши предыдущие наработки по проекту Mesto. Это может быть работа 11-го спринта или его улучшенная версия после 2-х последних спринтов. 
+<img src="./src/images/ReadMe/Main.png" width="100%">
 
-Все запросы на авторизацию, регистрацию и проверку токена должны работать через сервис `https://auth.nomoreparties.co`. Остальные запросы, не относящиеся к этой проектной работе могут быть к бэкенду из предыдущих спринтов.
+<h2 align="center"><a  href="https://danielloxxi.github.io/react-mesto-auth/#/sign-in">Test site</a></h2>
 
-Успехов!
+## Description
+
+The project supports registration, authorization, allows you to share cards with users, view them, delete and like them, change your avatar and nickname
+
+## Registration
+
