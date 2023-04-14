@@ -99,7 +99,11 @@ function App() {
           return data;
         }
       })
-      .catch(err => console.log(err))
+      .catch((err) => {
+        setIsGoodAuth(false);
+        setIsInfoTooltipOpen(true);
+        console.log(`Ошибка ${err}`);
+      })
   }
 
   function handleUpdateAvatar(props) {
