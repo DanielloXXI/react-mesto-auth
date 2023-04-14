@@ -67,7 +67,7 @@ The project supports registration, authorization, allows you to share cards with
 
 ### You can delete your card and exit your profile!
 
-<img src="./src/images/ReadMe/Exit.gif" width="100%">
+<img src="./src/images/ReadMe/exit.gif" width="100%">
 
 ## Try the oldest version in pure JavaScript!
 
