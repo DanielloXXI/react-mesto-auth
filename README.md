@@ -71,7 +71,7 @@ The project supports registration, authorization, allows you to share cards with
 
 ## Try the oldest version in pure JavaScript!
 
-<h1<a href="https://github.com/DanielloXXI/mesto"><img src="./src/images/ReadMe/clickme.png"></a></center>
+<h2 align="center"><a href="https://github.com/DanielloXXI/mesto"><img src="./src/images/ReadMe/clickme.png"></a></h2>
 
 ## Try the old version on React!
 
