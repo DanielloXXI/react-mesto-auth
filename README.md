@@ -1,4 +1,4 @@
-<h1 align="center">Project "Place" with authorization and registration!</h1>
+<h1 align="center">Project "Mesto" with authorization and registration!</h1>
 
 <img src="./src/images/ReadMe/main.png" width="100%">
 
