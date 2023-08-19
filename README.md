@@ -68,11 +68,3 @@ The project supports registration, authorization, allows you to share cards with
 ### You can delete your card and exit your profile!
 
 <img src="./src/images/ReadMe/exit.gif" width="100%">
-
-## Try the oldest version in pure JavaScript!
-
-<h2 align="center"><a href="https://github.com/DanielloXXI/mesto"><img src="./src/images/ReadMe/clickme.png"></a></h2>
-
-## Try the old version on React!
-
-<h2 align="center"><a href="https://github.com/DanielloXXI/mesto-react"><img src="./src/images/ReadMe/clickme.png"></a></h2>
